@@ -267,9 +267,9 @@ class ObjMesh:
 
             mtl = cast(MatInfo, chunk["mtl"])
             if "map_Kd" in mtl:
-                segment_into_color = 0
+                segment_into_color = (0, 0, 0)
                 if segment:
-                    segment_into_color = gen_segmentation_color(mesh_name)
+                    segment_into_color = tuple(gen_segmentation_color(mesh_name))
 
                 fn = cast(str, mtl["map_Kd"])
                 fn2 = get_resource_path(os.path.basename(fn))
@@ -286,7 +286,7 @@ class ObjMesh:
                     texture = load_texture(
                         get_resource_path("black_tile.png"),
                         segment=True,
-                        segment_into_color=gen_segmentation_color(mesh_name),
+                        segment_into_color=tuple(gen_segmentation_color(mesh_name)),
                     )
 
             self.vlists.append(vlist)
