@@ -27,6 +27,7 @@ parser.add_argument("--draw-curve", action="store_true", help="draw the lane fol
 parser.add_argument("--draw-bbox", action="store_true", help="draw collision detection bounding boxes")
 parser.add_argument("--domain-rand", action="store_true", help="enable domain randomization")
 parser.add_argument("--dynamics_rand", action="store_true", help="enable dynamics randomization")
+parser.add_argument("--segment", action="store_true", help="enable semantic segmentation")
 parser.add_argument("--frame-skip", default=1, type=int, help="number of frames to skip")
 parser.add_argument("--seed", default=1, type=int, help="seed")
 args = parser.parse_args()
@@ -47,7 +48,7 @@ else:
     env = gym.make(args.env_name)
 
 env.reset()
-env.render()
+env.render(segment=args.segment)
 
 
 @env.unwrapped.window.event
@@ -60,7 +61,7 @@ def on_key_press(symbol, modifiers):
     if symbol == key.BACKSPACE or symbol == key.SLASH:
         print("RESET")
         env.reset()
-        env.render()
+        env.render(segment=args.segment)
     elif symbol == key.PAGEUP:
         env.unwrapped.cam_angle[0] = 0
     elif symbol == key.ESCAPE:
@@ -129,9 +130,9 @@ def update(dt):
     if done:
         print("done!")
         env.reset()
-        env.render()
+        env.render(segment=args.segment)
 
-    env.render()
+    env.render(segment=args.segment)
 
 
 pyglet.clock.schedule_interval(update, 1.0 / env.unwrapped.frame_rate)
